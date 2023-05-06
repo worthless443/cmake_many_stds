@@ -6,8 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: check 
-        run: ls
+      - name: checkout
+        uses: actions/checkout@v2
       - name: configure 
         run: cmake .
       - name: build
