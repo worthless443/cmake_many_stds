@@ -1,4 +1,5 @@
-#include<iostream>
+#include<cstdio>
+
 int main() {
-	std::cout << "hello, standards\n";
+	std::printf("hello, standards\n");
 }
