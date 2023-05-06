@@ -1,5 +1,5 @@
 # Compile your project with many C++ standards at once
-
+![linux](https://github.com/worthless443/cmake_many_stds/actions/workflows/linux.yml/badge.svg)
 The CMake module provides a wrapper function to `add_executable()` and adds targets with different C++xx standards, the targets are executed with decending order, hense a sorting algorithm is present within the module. Additionally, it generates a `benchmark` bash executable that compares execution speed of all the different targets built with different C++ standards.
 
 It detects all the standards currently supported by your compiler , and builds targets based on it
