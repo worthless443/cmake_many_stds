@@ -3,6 +3,9 @@
 cmake_minimum_required(VERSION 3.14)
 project(BENCHMARK_STANDARDS CXX)
 include(build_standards.cmake)
-
+detect_gcc_13(has_gcc_13)
+if(has_gcc_13)
+	message(STATUS "The all new GCC-13 has been found on your system, you can try it")
+endif()
 add_executable_with_all_std_versions(6 test tests/test.cc)
 add_benchmark(test)
