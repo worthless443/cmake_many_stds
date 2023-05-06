@@ -1,0 +1,14 @@
+name: linux
+on:
+  push:
+    branches: ["master"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: configure 
+        run: cmake .
+      - name: build
+        run: make
+      - name: tests
+        run: ./benchmark
