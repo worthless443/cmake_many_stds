@@ -1,5 +1,4 @@
-#TODO add benchmarks for different CXX standards
-
+# all dedicated to sorting only
 function(is_list_same length)
 	cmake_parse_arguments(MOD "" "IF" "Else" ${ARGN})
 	set(raw_list ${MOD_UNPARSED_ARGUMENTS})
@@ -27,6 +26,7 @@ function(is_list_same length)
 	endforeach()
 endfunction()
 
+# all dedicated to sorting only
 function(sort_list outvar)
 	cmake_parse_arguments(MOD "" "IF" "Else" ${ARGN})
 	set(list1 ${MOD_UNPARSED_ARGUMENTS})
@@ -82,10 +82,37 @@ function(get_most_latest_std_version downto outvar)
 	set(${outvar} ${latests} PARENT_SCOPE)
 endfunction()
 
+function(add_benchmark target)
+	list(LENGTH LATEST_STD_VERSIONS len)
+	set(test_files)
+	set(test_files_command)
+	set(test_vars)
+	foreach(std ${LATEST_STD_VERSIONS})
+		set(test_files_command "${test_files_command} t_${std}=dolla\( \{ time eval ./${target}_${std}\; }  2>&1 1>/dev/null ) && ")
+		set(test_files ${test_files} ${target}_${std})
+		set(test_vars "${test_vars} echo '${std} - dollat_${std}' && ")
+	endforeach()
+	set(BENCHMARK_COMMAND "#!/bin/bash fuck TIMEFORMAT=\"%R\"fuck${test_files_command}echo done fuck ${test_vars} echo done")
+
+	add_custom_target(benchmarks ALL)
+	add_custom_command(
+		TARGET benchmarks
+		COMMAND echo '${BENCHMARK_COMMAND}' > benchmark
+		DEPENDS ${test_files}
+	)	
+	add_custom_target(build_exec
+		ALL 
+		COMMAND eval ./sanitize_benchmark benchmark
+		DEPENDS benchmark
+	)
+	message(STATUS "added \"benchmark\" for \"${target}\"")
+endfunction()
+	
 function(add_executable_with_all_std_versions downto target) 
 	cmake_parse_arguments(MOD "" "IF" "Else" ${ARGN})
 	set(list1 ${MOD_UNPARSED_ARGUMENTS})
 	get_most_latest_std_version(${downto} latest_std_versions)
+	set(LATEST_STD_VERSIONS ${latest_std_versions} PARENT_SCOPE)
 	list(LENGTH latest_std_versions len)
 	math(EXPR len "${len}-1" )
 	foreach(i RANGE ${len})
@@ -97,5 +124,3 @@ function(add_executable_with_all_std_versions downto target)
 		message(STATUS "adding latest C++ standard versions for ${CMAKE_CXX_COMPILER_ID} - C++${std} - target \"${target}\"")
 	endforeach()
 endfunction()
-
-
