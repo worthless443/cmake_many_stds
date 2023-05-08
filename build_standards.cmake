@@ -94,16 +94,16 @@ function(add_benchmark target)
 	endforeach()
 	set(BENCHMARK_COMMAND "#!/bin/bash fuck TIMEFORMAT=\"%R\"fuck${test_files_command}echo done fuck ${test_vars} echo done")
 
-	add_custom_target(benchmarks ALL)
+	add_custom_target(${target}_benchmarks ALL)
 	add_custom_command(
-		TARGET benchmarks
-		COMMAND echo '${BENCHMARK_COMMAND}' > benchmark
+		TARGET ${target}_benchmarks
+		COMMAND echo '${BENCHMARK_COMMAND}' > ${target}_benchmark
 		DEPENDS ${test_files}
 	)	
-	add_custom_target(build_exec
+	add_custom_target(${target}_build_exec
 		ALL 
-		COMMAND eval ./sanitize_benchmark benchmark
-		DEPENDS benchmark
+		COMMAND eval ./sanitize_benchmark ${target}_benchmark
+		DEPENDS ${target}_benchmark
 	)
 	message(STATUS "added \"benchmark\" for \"${target}\"")
 endfunction()
