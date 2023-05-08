@@ -13,4 +13,4 @@ jobs:
       - name: build
         run: make
       - name: tests
-        run: ./benchmark
+        run: ./crazy_benchmark && ./test_benchmark
