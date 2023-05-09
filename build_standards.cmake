@@ -92,7 +92,7 @@ function(add_benchmark target)
 		set(test_files ${test_files} ${target}_${std})
 		set(test_vars "${test_vars} echo '${std} - dollat_${std}' && ")
 	endforeach()
-	set(BENCHMARK_COMMAND "#!/bin/bash fuck TIMEFORMAT=\"%R\"fuck${test_files_command}echo done fuck ${test_vars} echo done")
+	set(BENCHMARK_COMMAND "#!/bin/bash fuck TIMEFORMAT=\"%R\"fuck${test_files_command}echo done fuck [ dolla? -gt 0 ] && echo error occured && exit fuck ${test_vars} echo done")
 
 	add_custom_target(${target}_benchmarks ALL)
 	add_custom_command(
